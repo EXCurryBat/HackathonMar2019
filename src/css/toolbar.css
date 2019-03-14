@@ -1,0 +1,45 @@
+.toolbar {
+    height: auto;
+    width: 100%;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    padding: 0.5em;
+    position: relative;
+}
+
+.sapLogoContainer {
+    height: 100%;
+    position: relative;
+}
+
+.sapLogo {
+    max-height: 100%;
+    position: absolute;
+}
+
+.floorDropdown {
+    margin-right: 1rem;
+}
+
+.filterGridColumn {
+    text-align: center !important;
+}
+
+.filterGridColumn .dropdown-content {
+    z-index: 10 !important;
+}
+
+.filterGridColumn .select_list {
+    width: 200px !important;
+    position: absolute !important;
+    z-index: 100;
+}
+
+.navInfoGridColumn .navigationButton {
+    float: right;
+    margin-right: 0 !important;
+}
+
+.navInfoGridColumn .infoButton {
+    float: right;
+    margin-left: 1rem !important;
+}

@@ -1,0 +1,29 @@
+{
+  "name": "project-atlas",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "js-priority-queue": "^0.1.5",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-redux": "^5.1.1",
+    "react-scripts": "1.1.4",
+    "redux": "^4.0.1",
+    "semantic-ui": "^2.3.3",
+    "semantic-ui-react": "^0.82.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "eslint": "^5.15.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4"
+  }
+}

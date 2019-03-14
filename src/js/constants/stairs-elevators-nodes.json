@@ -1,0 +1,169 @@
+[ {
+    "id": "s2",
+    "x": 367,
+    "y": 443,
+    "type": "stairs",
+    "floor": 1
+  },
+  {
+    "id": "elevatorA",
+    "x": 556,
+    "y": 565,
+    "type": "elevators",
+    "floor": 1
+  },
+  {
+    "id": "s5",
+    "x": 206,
+    "y": 569,
+    "type": "stairs",
+    "floor": 1
+  },
+  {
+    "id": "s1",
+    "x": 614,
+    "y": 585,
+    "type": "stairs",
+    "floor": 1
+  },
+  {
+    "id": "s3",
+    "x": 124,
+    "y": 304,
+    "type": "stairs",
+    "floor": 1
+  },
+  {
+    "id": "s4",
+    "x": 428,
+    "y": 163,
+    "type": "stairs",
+    "floor": 1
+  },
+  {
+    "id": "s6",
+    "x": 714,
+    "y": 220,
+    "type": "stairs",
+    "floor": 1
+  },
+  {
+    "id": "elevatorB",
+    "x": 1016,
+    "y": 277,
+    "type": "elevators",
+    "floor": 1
+  },
+  {
+    "id": "elevatorA",
+    "x": 557,
+    "y": 561,
+    "type": "elevators",
+    "floor": 2
+  },
+  {
+    "id": "elevatorB",
+    "x": 1018,
+    "y": 269,
+    "type": "elevators",
+    "floor": 2
+  },
+  {
+    "id": "s1",
+    "x": 581,
+    "y": 583,
+    "type": "stairs",
+    "floor": 2
+  },
+  {
+    "id": "s2",
+    "x": 369,
+    "y": 435,
+    "type": "stairs",
+    "floor": 2
+  },
+  {
+    "id": "s3",
+    "x": 119,
+    "y": 411,
+    "type": "stairs",
+    "floor": 2
+  },
+  {
+    "id": "s4",
+    "x": 428,
+    "y": 161,
+    "type": "stairs",
+    "floor": 2
+  },
+  {
+    "id": "s5",
+    "x": 208,
+    "y": 578,
+    "type": "stairs",
+    "floor": 2
+  },
+  {
+    "id": "s6",
+    "x": 827,
+    "y": 325,
+    "type": "stairs",
+    "floor": 2
+  },
+  {
+    "id": "elevatorA",
+    "x": 566,
+    "y": 572,
+    "type": "elevators",
+    "floor": 3
+  },
+  {
+    "id": "elevatorB",
+    "x": 1034,
+    "y": 274,
+    "type": "elevators",
+    "floor": 3
+  },
+  {
+    "id": "s1",
+    "x": 591,
+    "y": 566,
+    "type": "stairs",
+    "floor": 3
+  },
+  {
+    "id": "s2",
+    "x": 375,
+    "y": 440,
+    "type": "stairs",
+    "floor": 3
+  },
+  {
+    "id": "s3",
+    "x": 150,
+    "y": 436,
+    "type": "stairs",
+    "floor": 3
+  },
+  {
+    "id": "s4",
+    "x": 431,
+    "y": 159,
+    "type": "stairs",
+    "floor": 3
+  },
+  {
+    "id": "s5",
+    "x": 203,
+    "y": 606,
+    "type": "stairs",
+    "floor": 3
+  },
+  {
+    "id": "s6",
+    "x": 837,
+    "y": 329,
+    "type": "stairs",
+    "floor": 3
+  }
+]

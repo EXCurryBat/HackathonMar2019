@@ -1,0 +1,90 @@
+.roomList {
+    overflow-x: hidden;
+    height: calc(100vh - 11.5em);
+}
+
+.sidebarPushable {
+    margin-top: 0 !important;
+    border-top: 0 !important;
+    height: auto !important;
+}
+
+.searchbarOuterContainer {
+    display: flex;
+}
+
+.searchbarContainer {
+	flex: 1 0 auto;
+}
+
+.searchbar .input > input {
+    border-bottom: 0 !important;
+    border-right: 0 !important;
+}
+
+.filterSearchButton {
+    margin-right: 0 !important;
+    border-radius: 0 !important;
+}
+
+.additionalSearchOptions {
+    overflow-y: hidden;
+    margin-top: 0px !important;
+}
+
+.additionalSearchOptionsForm {
+    overflow-y: visible;
+    display: block !important;
+}
+
+.attendeesInput {
+    margin-bottom: 4px !important;
+}
+
+.searchbar > div > input {
+	border-radius: 0px !important;
+}
+
+.searchbar > div {
+	width: 100% !important;
+}
+
+.ui.segment.pushable.sidebarPushable .ui .segment .ui .overlay .top .wide .visible .sidebar .additionalSearchOptions {
+    overflow-y: visible !important;
+}
+
+.seatsLabel {
+    display: block;
+}
+
+.seatsInput {
+    display: block;
+    width: 100%;
+}
+
+.avEquipmentDropdownFormField .select {
+    position: relative;
+    width: 100%;
+}
+
+.avEquipmentLabel {
+    display: block;
+}
+
+.ui .sidebar {
+    overflow-y: visible !important;
+}
+
+.roomListTab .ui.bottom.attached.menu .item {
+    flex: 1 0 auto;
+    display: inline-block;
+    text-align: center;
+}
+
+.listItem {
+    color: black !important;
+}
+
+.listItem .active {
+    background-color: rgba(0,0,0,0.5);
+}

@@ -1,0 +1,15 @@
+.infoDialog {
+	margin: 0 !important;
+}
+
+.infoDialogContent {
+	white-space: pre-line;
+}
+
+.ui.page.modals.transition.visible {
+    display: flex !important;
+}
+
+.contactButtonsContainer .button {
+	margin-right: 1.5rem !important;
+}

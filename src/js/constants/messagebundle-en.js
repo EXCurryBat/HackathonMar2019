@@ -1,0 +1,7 @@
+export const INFO_DIALOG_HEADER = "About SAP Atlas";
+export const INFO_DIALOG_CONTENT = "This app was made by a group of interns in 2018. The project stemmed out of an intern hackathon in March 2018, where the five of us formed a group and created this app. We continued development after the hackathon, and officially released towards the end of our internships.\n\nWe hope you find this application helpful :)\n\nMade by Shea Faigan, Jingwei Zhang, Griffin Jarvis, Tanya Tan, and Barbara Jun, aka Team 8."
+export const WELCOME_DIALOG_HEADER = "Welcome to SAP Atlas!";
+export const WELCOME_DIALOG_CONTENT = "Introducing SAP Labs Vancouver's new office navigation solution.";
+export const BEGIN_FEATURE_LIST = "You will find the following features available:"
+export const FEATURE_LIST = ["Room searching with additional parameters, such as seats and A/V equipment", "Room and desk location", "Room details, such as seats, A/V equipment, etc.", "Cross-floor path finding", "URL parameters ('selectedRoom', 'selectedDesk', 'navigateFrom', 'navigateTo')"];
+export const RECRUITMENT_MESSAGE = "We are looking for people to take over development and maintenance of the application. If you are interested, please contact Shea Faigan (shea.faigan@sap.com)."
