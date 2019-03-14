@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { Grid, List, Input, Button, Segment, Sidebar, Search, Tab, Icon, Menu } from 'semantic-ui-react';
+import { Grid, List, Input, Button, Segment, Sidebar, Search, Tab, Icon, Menu, Divider } from 'semantic-ui-react';
 import MultiSelect from './MultiSelect';
 import Utils from './Utils';
 import '../../css/roomlist.css';
@@ -22,6 +22,7 @@ const mapStateToProps = (state) => {
         selectedSearchFilters: state.selectedSearchFilters,
     };
 };
+
 const mapDispatchToProps = (dispatch) => {
     return {
         selectRoom: room => dispatch(selectRoom(room)),
@@ -31,6 +32,7 @@ const mapDispatchToProps = (dispatch) => {
         selectSearchFilters: filters => dispatch(selectSearchFilters(filters))
     };
 };
+
 class ConnectedRoomList extends Component {
     constructor(props) {
         super(props);
@@ -51,9 +53,11 @@ class ConnectedRoomList extends Component {
             searchOptionsVisibility: false,
         };
     }
+
     handleTabChange(event, data) {
         this.props.selectRoomListTab(data.activeIndex);
     }
+
     onSearchChange(event, { value }) {
         setTimeout(() => {
             if (value.length < 1) {
@@ -62,19 +66,23 @@ class ConnectedRoomList extends Component {
                     desks: deskList,
                 });
             }
+
             const re = new RegExp(_.escapeRegExp(value), 'i');
             const isMatch = result => re.test(result.title);
+
             this.setState({
                 rooms: _.filter(roomList, isMatch),
                 desks: _.filter(deskList, isMatch),
             });
         }, 10);
     }
+
     toggleSearchOptionsVisibility() {
         this.setState({
             searchOptionsVisibility: !this.state.searchOptionsVisibility
         });
     }
+
     onSearchOptionsChange(event, value) {
         var selectedAVEquipment = this.props.selectedSearchFilters.avEquipment || [];
         var seats = this.props.selectedSearchFilters.seats || 0;
@@ -90,7 +98,9 @@ class ConnectedRoomList extends Component {
             }
         );
         this.filterRooms(seats, selectedAVEquipment);
+
     }
+
     onRoomClick(event) {
         var room = Utils.getRoomByName(event.target.innerText);
         if (this.props.selectedFloor !== room.floor) {
@@ -102,6 +112,7 @@ class ConnectedRoomList extends Component {
             searchOptionsVisibility: false
         });
     }
+
     onDeskClick(event) {
         var desk = Utils.getDesk(event.target.innerText);
         if (this.props.selectedFloor !== desk.floor) {
@@ -113,10 +124,12 @@ class ConnectedRoomList extends Component {
             searchOptionsVisibility: false
         });
     }
+
     filterRooms(seats, selectedAVEquipment) {
         let rooms = roomList.slice(0); // make a copy
         let match;
         let updatedRoomList = [];
+
         for (let i = 0; i < rooms.length; i++) {
             let room = rooms[i];
             match = true;
@@ -139,28 +152,35 @@ class ConnectedRoomList extends Component {
             searchFilterActive: (seats || selectedAVEquipment.length) ? true : false
         });
     }
+
     componentDidMount() {
         this.filterRooms(this.props.selectedSearchFilters.seats, this.props.selectedSearchFilters.avEquipment);
     }
+
     getRooms(floor = ALL_FLOORS.index) {
         let rooms = Object.values(this.state.rooms);
+
         if (floor !== ALL_FLOORS.index) {
             rooms = rooms.filter((room) => {
                 return (room.floor === floor);
             });
         }
+
         rooms.sort((roomA, roomB) => roomA.title.localeCompare(roomB.title));
+
         return rooms.map((room, i) => (
             <List.Item className="listItem" key={i} onClick={this.onRoomClick}>
                 {room.title}
             </List.Item>
         ));
     }
+
     getDesks() {
         const desks = this.state.desks;
         return desks.map((desk, i) => {
             const { selectedDesk } = this.props;
             let listItemClass = 'listItem';
+
             if (selectedDesk === desk.title) {
                 listItemClass += ' active';
             }
@@ -171,59 +191,35 @@ class ConnectedRoomList extends Component {
             );
         });
     }
+
     getSearchOptionsSidebar() {
         let avEquipmentOptions = AV_EQUIPMENT_OPTIONS;
         return (
             <Grid padded className="additionalSearchOptionsForm">
                 <Grid.Row className="seatsFormField">
-                    <Grid.Column>
-                        <label className="timeHourLabel">Hour</label>
-                        <select id= "floorList"
-                            className="timeHourInput"
-                            defaultValue={this.props.selectedSearchFilters.seats || undefined}
-                            onChange={this.onSearchOptionsChange}
-                            ref={(a) => this._attendeesInput = a}
-                            >
-                            <option value="00">00</option>
-                            <option value="01">01</option>
-                            <option value="02">02</option>
-                            <option value="03">03</option>
-                            <option value="04">04</option>
-                            <option value="05">05</option>
-                            <option value="06">06</option>
-                            <option value="07">07</option>
-                            <option value="08">08</option>
-                            <option value="09">09</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                            <option value="20">20</option>
-                            <option value="21">21</option>
-                            <option value="22">22</option>
-                            <option value="23">23</option>
-                        </select>
-                    </Grid.Column>
-                    <Grid.Column>
-                        <label className="timeMinuteLabel">Minute</label>
-                        <select 
-                            className="timeHourInput"
-                            defaultValue={this.props.selectedSearchFilters.seats || undefined}
-                            onChange={this.onSearchOptionsChange}
-                            ref={(a) => this._attendeesInput = a}
-                            >
-                            <option value="00">00</option>
-                            <option value="30">30</option>
-                        </select>
-                    </Grid.Column>
-                    
+                    <label className="timeHourLabel">Enter Meeting Date and Time</label>
                 </Grid.Row>
+                <Grid.Row className="seatsFormField">
+                    <label className="timeHourLabel">Start Time (yyyy-MM-dd hh-mm)</label>
+                    <Input
+                        placeholder={"Enter a time..."}
+                        className="startInput"
+                        onChange={this.onSearchOptionsChange}
+                        defaultValue={this.props.selectedSearchFilters.hours || undefined}
+                            ref={(a) => this._attendeesInput = a}/>
+                </Grid.Row>
+                <Grid.Row className="seatsFormField">
+                    <label className="timeHourLabel">End Time (yyyy-MM-dd hh-mm)</label>
+                        <Input
+                            placeholder={"Enter a time..."}
+                            className="endInput"
+                            onChange={this.onSearchOptionsChange}
+                            defaultValue={this.props.selectedSearchFilters.minutes || undefined}
+                            ref={(a) => this._attendeesInput = a}/>        
+                </Grid.Row>        
+
+                    <Divider horizontal>O</Divider>
+
                 <Grid.Row className="seatsFormField">
                     <label className="seatsLabel">Seats</label>
                     <Input
@@ -249,6 +245,7 @@ class ConnectedRoomList extends Component {
             </Grid>
         );
     }
+
     render() {
         const panes = [
             {
@@ -330,5 +327,7 @@ class ConnectedRoomList extends Component {
         );
     }
 };
+
 const RoomList = connect(mapStateToProps, mapDispatchToProps)(ConnectedRoomList);
+
 export default RoomList;
