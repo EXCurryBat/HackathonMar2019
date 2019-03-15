@@ -12,6 +12,8 @@ import { SHOW_NUM_SELECTED } from '../constants/view-types';
 import { AV_EQUIPMENT_OPTIONS } from '../constants/av-equipment';
 import { ALL_FLOORS, FLOOR1, FLOOR2, FLOOR3 } from '../constants/filters';
 
+const SchedulesJSON = require('../../data/schedules.json');
+
 const roomList = require('../../data/rooms.json');
 const deskList = require('../../data/desks.json');
 
@@ -72,7 +74,7 @@ class ConnectedRoomList extends Component {
         this.setState({
           startDate: date
         });
-        console.log(typeof(date))
+        // console.log(typeof(date))
       }
 
     handleTabChange(event, data) {
@@ -110,8 +112,14 @@ class ConnectedRoomList extends Component {
     
         if (value.constructor === Array) {
             selectedAVEquipment = value;
+            this.setState({
+                lastEquip: selectedAVEquipment
+            });
         } else {
             seats = parseInt(value.value);
+            this.setState({
+                lastSeat: seats
+            });
         }
         this.props.selectSearchFilters(
             {
@@ -136,7 +144,83 @@ class ConnectedRoomList extends Component {
     }
 
     submitSearch() {
-        alert('Hello!')
+        // alert('Hello!')
+        // this.filterRooms(this.state.lastSeat, this.state.lastEquip);
+
+        let rooms = roomList.slice(0); // make a copy
+        let match;
+        let updatedRoomList = [];
+
+        for (let i = 0; i < rooms.length; i++) {
+            let room = rooms[i];
+            match = true;
+            if (this.state.lastEquip.length > 0) {
+                for (let j in this.state.lastEquip) {
+                    if (!room[this.state.lastEquip[j]]) {
+                        match = false;
+                    }
+                }
+            }
+            if (this.state.lastSeat > room.seats) {
+                match = false;
+            }
+            if (match) {
+                updatedRoomList.push(room);
+            }
+            
+        }
+
+
+        let monthPadding = '';
+        let datePadding = '';
+        let hourPadding = '';
+        let minutePadding = '';
+
+        if(this.state.startDate.getMonth() + 1 < 10){
+            monthPadding = '0';
+        }
+
+        if(this.state.startDate.getDate() < 10){
+            datePadding = '0';
+        }
+
+        if(this.state.startDate.getHours() < 10){
+            hourPadding = '0';
+        }
+
+        if(this.state.startDate.getMinutes() < 10){
+            minutePadding = '0';
+        }
+
+        var targetDateTime = `${monthPadding}${this.state.startDate.getMonth() + 1}-${datePadding}${this.state.startDate.getDate()}-${this.state.startDate.getFullYear()} ${hourPadding}${this.state.startDate.getHours()}${minutePadding}${this.state.startDate.getMinutes()}`;
+
+        // var currRooms = this.state.rooms;
+        let currRooms = updatedRoomList.splice(0);
+        var updatedRooms = [];
+        for (let i = 0; i < currRooms.length; i++) {
+            console.log(currRooms[i].title);
+            let room = currRooms[i];
+            let isFull = false;
+
+            //extract room schedule and compare
+            let roomSchedule = SchedulesJSON[room.title];
+            for(let j = 0; j < roomSchedule.length; j++){
+                isFull = this.checkSchedule(targetDateTime, roomSchedule[j]);
+                if(isFull){
+                    break;
+                }
+            }
+            if(!isFull){
+
+                updatedRooms.push(room);
+            }
+
+        }
+        console.log(targetDateTime);
+        this.setState({
+            rooms: updatedRooms,
+            searchFilterActive: true
+        });
     }
 
     onDeskClick(event) {
@@ -152,55 +236,42 @@ class ConnectedRoomList extends Component {
     }
 
     checkSchedule(inputRange, scheduledSession){
-        var targetDay = inputRange[0].split(" ")[0];
+        var targetDay = inputRange.split(" ")[0];
         var schedDay = scheduledSession[0].split(" ")[0];
         var sameDay = targetDay === schedDay;
-        console.log("New Entry:\n");
-        console.log(`Target: ${targetDay} | Sched: ${schedDay} | Result: ${sameDay}`);
-        console.log("Time Comparison");
-        var targetStart = parseInt(inputRange[0].split(" ")[1]);
-        var targetEnd = parseInt(inputRange[1].split(" ")[1]);
+        var targetStart = parseInt(inputRange.split(" ")[1]);
         var schedStart = parseInt(scheduledSession[0].split(" ")[1]);
         var schedEnd = parseInt(scheduledSession[1].split(" ")[1]);
 
         if(!sameDay){
-            console.log("DIFFERENT DAY");
+            // console.log("DIFFERENT DAY");
             return false;
         }
 
         if(targetStart == schedStart){
             return true;
         } else if(targetStart < schedStart){
-            if(targetEnd <= schedStart){
-                console.log("No Conflict")
-                return false;
-            }
-            console.log("BIG CONFLICT");
-            return true;
+
+            // // Check if meeting will overlap
+            // if(targetEnd <= schedStart){
+            //     // console.log("No Conflict")
+            //     return false;
+            // }
+            // // console.log("BIG CONFLICT");
+            // return true;
+            return false
+
         } else {
             if(targetStart >= schedEnd){
-                console.log("No Conflict");
+                // console.log("No Conflict");
                 return false;
             }
-            console.log("BIG CONFLICT");
+            // console.log("BIG CONFLICT");
             return true;
         }
     }
 
     filterRooms(seats, selectedAVEquipment) {
-
-        let testInput = ["09-01-2019 1159", "09-01-2019 1559"];
-        let testRoomData = [
-            ["09-01-2019 1700", "09-01-2019 1730"],
-            ["08-25-2019 1800", "08-25-2019 1800"],
-            ["08-26-2019 1800", "08-26-2019 1800"],
-            ["09-01-2019 1600", "09-01-2019 1700"],
-            ["09-01-2019 1800", "09-01-2019 1900"],
-            ["09-01-2019 1130", "09-01-2019 1200"],
-            ["08-25-2019 1800", "08-25-2019 1800"],
-            ["08-25-2019 1800", "08-25-2019 1800"]
-        ];
-
         let rooms = roomList.slice(0); // make a copy
         let match;
         let updatedRoomList = [];
@@ -219,24 +290,11 @@ class ConnectedRoomList extends Component {
                 match = false;
             }
             if (match) {
-                let isFull = false;
-                //extract room schedule and compare
-                let roomSchedule = testRoomData;
-                for(let j = 0; j < roomSchedule.length; j++){
-                    isFull = this.checkSchedule(testInput, testRoomData[j]);
-                    if(isFull){
-                        break;
-                    }
-                }
-                console.log("Full? " + isFull);
-
-                // if(!isFull){
-                //     updatedRoomList.push(room);
-                // }
                 updatedRoomList.push(room);
             }
             
         }
+
         this.setState({
             rooms: updatedRoomList,
             searchFilterActive: (seats || selectedAVEquipment.length) ? true : false
@@ -245,6 +303,10 @@ class ConnectedRoomList extends Component {
 
     componentDidMount() {
         this.filterRooms(this.props.selectedSearchFilters.seats, this.props.selectedSearchFilters.avEquipment);
+        this.setState({
+            lastSeat: this.props.selectedSearchFilters.seats,
+            lastEquip: this.props.selectedSearchFilters.avEquipment
+        });
     }
 
     getRooms(floor = ALL_FLOORS.index) {
