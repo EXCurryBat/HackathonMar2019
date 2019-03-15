@@ -58,17 +58,30 @@ class ConnectedRoomList extends Component {
             searchFilterActive: false,
             searchOptionsVisibility: false,
             startDate: new Date(),
-            // startTime: ''
+            endDate: new Date(),
+
         };
         this.handleDateChange = this.handleDateChange.bind(this);
-
+        this.handleEndDate = this.handleEndDate.bind(this);
     }
 
     handleDateChange(date) {
         this.setState({
           startDate: date
         });
+        if (date > this.state.endDate){
+            this.setState({
+                endDate: date
+            })
+        }
         this.filterRooms(this.state.lastSeat, this.state.lastEquip, true, date);
+    }
+
+
+    handleEndDate(date) {
+        this.setState({
+            endDate: date
+        });
     }
 
     handleTabChange(event, data) {
@@ -146,7 +159,7 @@ class ConnectedRoomList extends Component {
         }
         Utils.setURLParam('markedRooms', roomNames);
         this.props.markedRooms(roomNames);
-        
+        window.open('http://localhost:8080')
         // this.filterRooms(this.state.lastSeat, this.state.lastEquip, true, this.state.startDate);
         // alert('Hello!')
         // this.filterRooms(this.state.lastSeat, this.state.lastEquip);
@@ -421,20 +434,31 @@ class ConnectedRoomList extends Component {
                     onChange={this.handleDateChange}
                     />
                 </Grid.Row>
-                <Grid.Row className="timeFormField">
-                    <DatePicker
-                    className="timeInput"
-                    hintText="Pick your time"
-                    selected={this.state.startDate}
-                    onChange={this.handleDateChange}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    dateFormat="h:mm aa"
-                    timeCaption="Time"
-                    />
-                </Grid.Row>
+                    <Grid.Row className="timeFormField">
+                        {/* <label className="seatsLabel">From: </label> */}
+                        <DatePicker
+                        className="timeInput"
+                        hintText="Pick your time"
+                        selected={this.state.startDate}
+                        onChange={this.handleDateChange}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        dateFormat="h:mm aa"
+                        timeCaption="Time"
+                        />
+                        {/* <label className="seatsLabel">To: </label> */}
+                        <DatePicker
+                        className="endInput"
+                        hintText="Pick your time"
+                        selected={this.state.endDate}
+                        onChange={this.handleEndDate}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        dateFormat="h:mm aa"
+                        timeCaption="Time"
+                        />
+                    </Grid.Row>
                     <Divider horizontal>O</Divider>
-
                 <Grid.Row className="seatsFormField">
                     <label className="seatsLabel">Seats</label>
                     <Input
