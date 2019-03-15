@@ -57,27 +57,46 @@
     display: block;
 }
 
-/* .timeInput{
+.timeInput{
     display:block;
-    width:100%;
+    width:40%;
     z-index: 999;
 }
 
-.dateInput{
+/* .dateInput{
     display:block;
     width:100%;
     z-index: 999;
 } */
 
+.endInput{
+    display:block;
+    width:40%;
+    z-index: 999;
+}
+
 .dateFormField {
     display:block;
     width:100%;
-    z-index: 12;
+    z-index: 13;
+}
+
+.meetingFormField{
+    display:block;
+    width:100%;
 }
 
 .timeFormField {
     display:block;
-    width:100%;
+    flex: 1;
+    width: 40%;
+    /* flex-direction: column; */
+    z-index: 12;
+}
+.durationFormField {
+    display:block;
+    flex: 1;
+    /* flex-direction: column; */
     z-index: 11;
 }
 

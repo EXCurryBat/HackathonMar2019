@@ -57,18 +57,29 @@ class ConnectedRoomList extends Component {
             searchFilterActive: false,
             searchOptionsVisibility: false,
             startDate: new Date(),
-            // startTime: ''
+            endDate: new Date(),
+
         };
         this.handleDateChange = this.handleDateChange.bind(this);
-
+        this.handleEndDate = this.handleEndDate.bind(this);
     }
 
     handleDateChange(date) {
         this.setState({
           startDate: date
         });
-        // console.log(typeof(date))
+        if (date > this.state.endDate){
+            this.setState({
+                endDate: date
+            })
+        }
       }
+
+    handleEndDate(date) {
+        this.setState({
+            endDate: date
+        });
+    }
 
     handleTabChange(event, data) {
         this.props.selectRoomListTab(data.activeIndex);
@@ -136,10 +147,7 @@ class ConnectedRoomList extends Component {
         });
     }
 
-    submitSearch() {
-        // alert('Hello!')
-        // this.filterRooms(this.state.lastSeat, this.state.lastEquip);
-
+    createRoomList() {
         let rooms = roomList.slice(0); // make a copy
         let match;
         let updatedRoomList = [];
@@ -214,6 +222,14 @@ class ConnectedRoomList extends Component {
             rooms: updatedRooms,
             searchFilterActive: true
         });
+    }
+
+    submitSearch() {
+        // alert('Hello!')
+        // this.filterRooms(this.state.lastSeat, this.state.lastEquip);
+        this.createRoomList();
+        window.open('localhost:8080', 'data');
+        
     }
 
     onDeskClick(event) {
@@ -352,20 +368,31 @@ class ConnectedRoomList extends Component {
                     onChange={this.handleDateChange}
                     />
                 </Grid.Row>
-                <Grid.Row className="timeFormField">
-                    <DatePicker
-                    className="timeInput"
-                    hintText="Pick your time"
-                    selected={this.state.startDate}
-                    onChange={this.handleDateChange}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    dateFormat="h:mm aa"
-                    timeCaption="Time"
-                    />
-                </Grid.Row>
+                    <Grid.Row className="timeFormField">
+                        {/* <label className="seatsLabel">From: </label> */}
+                        <DatePicker
+                        className="timeInput"
+                        hintText="Pick your time"
+                        selected={this.state.startDate}
+                        onChange={this.handleDateChange}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        dateFormat="h:mm aa"
+                        timeCaption="Time"
+                        />
+                        {/* <label className="seatsLabel">To: </label> */}
+                        <DatePicker
+                        className="endInput"
+                        hintText="Pick your time"
+                        selected={this.state.endDate}
+                        onChange={this.handleEndDate}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        dateFormat="h:mm aa"
+                        timeCaption="Time"
+                        />
+                    </Grid.Row>
                     <Divider horizontal>O</Divider>
-
                 <Grid.Row className="seatsFormField">
                     <label className="seatsLabel">Seats</label>
                     <Input
