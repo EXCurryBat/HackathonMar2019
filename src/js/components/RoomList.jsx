@@ -213,7 +213,8 @@ class ConnectedRoomList extends Component {
                 <Grid.Row className="seatsFormField">
                     <DatePicker
                     selected={this.state.startDate}
-                    onChange={this.handleChange}
+                    onChange={this.handleDateChange}
+                    showTimeSelect
                     />
                 </Grid.Row>
                 <Grid.Row className="seatsFormField">
