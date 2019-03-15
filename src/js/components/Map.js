@@ -28,7 +28,8 @@ const mapStateToProps = (state) => {
         selectedMapFilters: state.selectedMapFilters,
         navigateFrom: state.navigateFrom,
         navigateTo: state.navigateTo,
-        navCompleted: state.navCompleted
+        navCompleted: state.navCompleted,
+        markedRooms: state.markedRooms,
     };
 }
 
@@ -51,6 +52,7 @@ class ConnectedMap extends Component {
         this.navigate = this.navigate.bind(this);
         this.renderOnCanvas = this.renderOnCanvas.bind(this);
         this.clearNavigation = this.clearNavigation.bind(this);
+        this.renderFilteredMarkers = this.renderFilteredMarkers.bind(this);
         this.naviCache = {
             type: SAME_FLOOR,
             floor: 2,
@@ -246,6 +248,25 @@ class ConnectedMap extends Component {
         }
     }
 
+    renderFilteredMarkers(){
+        console.log(this.props.markedRooms);
+        if(this.props.markedRooms !== undefined && this.props.markedRooms.length > 0){
+            for (let i = 0; i < this.props.markedRooms.length ; i++){
+                if(this.props.markedRooms[i] == undefined){
+                    continue;
+                }
+                let markerImage = new Image();
+                let selectedPlace = Utils.getRoomByName(this.props.markedRooms[i]);
+                if (this.props.selectedFloor === selectedPlace.floor) {
+                    markerImage.src = require('../../images/marker.png');
+                    markerImage.onload = () => {
+                        ctx.drawImage(markerImage, selectedPlace.x/MAP_X*canvas.width- ICON_SIZE/2, selectedPlace.y/MAP_Y*canvas.height-ICON_SIZE , ICON_SIZE, ICON_SIZE);
+                    }
+                }
+            }
+        }
+    }
+
     getDeskFromName(title) {
         for (let i in desks) {
             let desk = desks[i];
@@ -335,6 +356,11 @@ class ConnectedMap extends Component {
         window.addEventListener("resize", this.updateSize);
         this.updateSize();
         this.drawLocationMarker();
+        this.renderFilteredMarkers();
+    }
+
+    componentWillReceiveProps(){
+        this.renderFilteredMarkers();
     }
 
     componentWillUnmount() {
@@ -468,6 +494,7 @@ class ConnectedMap extends Component {
         if (ctx) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             this.drawLocationMarker();
+            this.renderFilteredMarkers();
             this.visualizeNavigationResult(false);
         }
     }
@@ -516,6 +543,7 @@ class ConnectedMap extends Component {
                 {this.renderOnCanvas()}
                 {this.navigate()}
                 {this.drawLocationMarker()}
+                {this.renderFilteredMarkers()}
             </div>
         );
     }

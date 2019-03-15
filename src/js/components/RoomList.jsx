@@ -7,7 +7,7 @@ import { Grid, List, Input, Button, Segment, Sidebar, Search, Tab, Icon, Menu, D
 import MultiSelect from './MultiSelect';
 import Utils from './Utils';
 import '../../css/roomlist.css';
-import { selectRoom, selectFloor, selectDesk, selectRoomListTab, selectSearchFilters } from '../actions/index';
+import { selectRoom, selectFloor, selectDesk, selectRoomListTab, selectSearchFilters, markedRooms } from '../actions/index';
 import { SHOW_NUM_SELECTED } from '../constants/view-types';
 import { AV_EQUIPMENT_OPTIONS } from '../constants/av-equipment';
 import { ALL_FLOORS, FLOOR1, FLOOR2, FLOOR3 } from '../constants/filters';
@@ -23,7 +23,7 @@ const mapStateToProps = (state) => {
         selectedDesk: state.selectedDesk,
         selectedFloor: state.selectedFloor,
         selectedRoomListTab: state.selectedRoomListTab,
-        selectedSearchFilters: state.selectedSearchFilters,
+        selectedSearchFilters: state.selectedSearchFilters
     };
 };
 
@@ -33,7 +33,8 @@ const mapDispatchToProps = (dispatch) => {
         selectDesk: desk => dispatch(selectDesk(desk)),
         selectFloor: floor => dispatch(selectFloor(floor)),
         selectRoomListTab: tab => dispatch(selectRoomListTab(tab)),
-        selectSearchFilters: filters => dispatch(selectSearchFilters(filters))
+        selectSearchFilters: filters => dispatch(selectSearchFilters(filters)),
+        markedRooms: rooms => dispatch(markedRooms(rooms)),
     };
 };
 
@@ -137,7 +138,16 @@ class ConnectedRoomList extends Component {
     }
 
     submitSearch() {
-        this.filterRooms(this.state.lastSeat, this.state.lastEquip, true, this.state.startDate);
+
+        let roomNames = [];
+        let filteredRooms = this.state.rooms.slice(0);
+        for(let i = 0; i < filteredRooms.length; i++){
+            roomNames.push(filteredRooms[i].title);
+        }
+        Utils.setURLParam('markedRooms', roomNames);
+        this.props.markedRooms(roomNames);
+        
+        // this.filterRooms(this.state.lastSeat, this.state.lastEquip, true, this.state.startDate);
         // alert('Hello!')
         // this.filterRooms(this.state.lastSeat, this.state.lastEquip);
 
@@ -343,7 +353,7 @@ class ConnectedRoomList extends Component {
                 rooms: updatedRooms,
                 searchFilterActive: true
             });
-            console.log(this.state.rooms);
+            // console.log(this.state.rooms);
         } else {
             this.setState({
                 rooms: updatedRoomList,
@@ -353,7 +363,7 @@ class ConnectedRoomList extends Component {
         
     }
 
-    componentDidMount() {
+    componentDidMount() {   
         this.filterRooms(this.props.selectedSearchFilters.seats, this.props.selectedSearchFilters.avEquipment, false, this.state.startDate);
         this.setState({
             lastSeat: this.props.selectedSearchFilters.seats,

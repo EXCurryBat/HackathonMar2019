@@ -1,4 +1,4 @@
-import { SELECT_ROOM, SELECT_DESK, SELECT_FLOOR, SELECT_VIEW, SELECT_MAP_FILTERS, SELECT_ROOM_LIST_TAB, SELECT_SEARCH_FILTERS, SET_INFO_DIALOG_VISIBILITY, START_NAVIGATION, NAVIGATE_COMPLETE } from '../constants/action-types.js'
+import { SELECT_ROOM, SELECT_DESK, SELECT_FLOOR, SELECT_VIEW, SELECT_MAP_FILTERS, SELECT_ROOM_LIST_TAB, SELECT_SEARCH_FILTERS, SET_INFO_DIALOG_VISIBILITY, START_NAVIGATION, NAVIGATE_COMPLETE, MARKED_ROOMS } from '../constants/action-types.js'
 
 export const selectRoom = (room) => ({
     type: SELECT_ROOM,
@@ -9,6 +9,11 @@ export const selectDesk = (desk) => ({
     type: SELECT_DESK,
     desk: desk
 });
+
+export const markedRooms = (rooms) => ({
+    type: MARKED_ROOMS,
+    rooms: rooms
+})
 
 export const selectFloor = (floor) => ({
     type: SELECT_FLOOR,

@@ -1,4 +1,4 @@
-import { SELECT_FLOOR, SELECT_ROOM, SELECT_DESK, SELECT_MAP_FILTERS, SELECT_ROOM_LIST_TAB, SELECT_SEARCH_FILTERS, SET_INFO_DIALOG_VISIBILITY, START_NAVIGATION, NAVIGATE_COMPLETE } from '../constants/action-types';
+import { MARKED_ROOMS, SELECT_FLOOR, SELECT_ROOM, SELECT_DESK, SELECT_MAP_FILTERS, SELECT_ROOM_LIST_TAB, SELECT_SEARCH_FILTERS, SET_INFO_DIALOG_VISIBILITY, START_NAVIGATION, NAVIGATE_COMPLETE } from '../constants/action-types';
 import { KITCHENS, BATHROOMS, STAIRS, ELEVATORS, AMENITIES, ALL_FLOORS } from '../constants/filters';
 import Utils from '../components/Utils';
 
@@ -38,6 +38,11 @@ const rootReducer = (state, action) => {
                 selectedRoom: action.room,
                 selectedDesk: ''
             };
+        case MARKED_ROOMS:
+            return{
+                ...state,
+                markedRooms: action.rooms,
+            }
         case SELECT_DESK:
             return {
                 ...state,
