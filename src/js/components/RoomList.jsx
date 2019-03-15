@@ -151,7 +151,8 @@ class ConnectedRoomList extends Component {
 
     submitSearch() {
         this.filterRooms(this.state.lastSeat, this.state.lastEquip, true, this.state.startDate);
-        window.open('localhost:8080')
+        // window.open('localhost:8080')
+        window.open('http://localhost:8080')
         // alert('Hello!')
         // this.filterRooms(this.state.lastSeat, this.state.lastEquip);
 
@@ -229,14 +230,6 @@ class ConnectedRoomList extends Component {
         //     rooms: updatedRooms,
         //     searchFilterActive: true
         // });
-    }
-
-    submitSearch() {
-        // alert('Hello!')
-        // this.filterRooms(this.state.lastSeat, this.state.lastEquip);
-        this.createRoomList();
-        window.open('localhost:8080', 'data');
-        
     }
 
     onDeskClick(event) {
