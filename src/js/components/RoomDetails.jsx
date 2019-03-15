@@ -6,6 +6,9 @@ import { selectRoom } from '../actions/index';
 import Utils from './Utils';
 import '../../css/roomdetails.css';
 
+const SchedulesJSON = require('../../data/schedules.json');
+// const RoomSchedule = JSON.parse('../../data/schedules.json');
+
 const mapStateToProps = state => ({
     selectedRoom: state.selectedRoom,
 });
@@ -31,6 +34,20 @@ const avEquipment = {
     skype_collaboration: 'Skype Collaboration',
     surface_hub: 'Surface Hub',
 };
+
+const getRoomBookings = (selectedRoom) => {
+    const selectRoomTitle = selectedRoom.title;
+    const currSchedule = SchedulesJSON[selectRoomTitle];
+
+    return currSchedule.map((entry, i) => (
+        <List.Item
+            className="listItem"
+            key={i}
+        >
+            {entry[0]}
+        </List.Item>
+    ))
+}
 
 const getRoomEquipmentList = (selectedRoom) => {
     const roomEquipment = Object.keys(avEquipment).map(equipment => (
@@ -91,6 +108,15 @@ function ConnectedRoomDetails({ selectedRoom, onBackButtonClicked }) {
             </Header>
             <List>
                 {getRoomEquipmentList(selectedRoomInfo)}
+            </List>
+            <Header
+                as="h4"
+                className="avEquipmentHeader"
+            >
+                <Header.Content>Scheduled Bookings</Header.Content>
+            </Header>
+            <List>
+                {getRoomBookings(selectedRoomInfo)}
             </List>
         </div>
     );
