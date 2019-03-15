@@ -58,15 +58,8 @@ class ConnectedRoomList extends Component {
             // startTime: ''
         };
         this.handleDateChange = this.handleDateChange.bind(this);
-        // this.handleTimeChange = this.handleTimeChange.bind(this);
-    }
 
-    // handleTimeChange(time) {
-    //     this.setState({
-    //       startTime: time
-    //     });
-    //     console.log(typeof(time))
-    //   }
+    }
 
     handleDateChange(date) {
         this.setState({
@@ -136,7 +129,19 @@ class ConnectedRoomList extends Component {
     }
 
     submitSearch() {
-        alert('Hello!')
+        // var roomNames = ['Spruce', 'Umbrella', 'Ironwood'];
+        // var roomList = [];
+        // for(var i=0;i<roomNames.length;i++){
+        //     roomList.push(Utils.getRoomByName(roomNames[i]));
+        // }
+        // if (this.props.selectedFloor !== 3) {
+        //     this.props.selectFloor(3);
+        // }
+        // Utils.setURLParam('selectedRoom', roomList[1].title);
+        // this.props.selectRoom(roomList);
+        // this.setState({
+        //     searchOptionsVisibility: false
+        // });
     }
 
     onDeskClick(event) {
