@@ -57,6 +57,30 @@
     display: block;
 }
 
+/* .timeInput{
+    display:block;
+    width:100%;
+    z-index: 999;
+}
+
+.dateInput{
+    display:block;
+    width:100%;
+    z-index: 999;
+} */
+
+.dateFormField {
+    display:block;
+    width:100%;
+    z-index: 12;
+}
+
+.timeFormField {
+    display:block;
+    width:100%;
+    z-index: 11;
+}
+
 .seatsInput {
     display: block;
     width: 100%;

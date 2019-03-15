@@ -54,15 +54,25 @@ class ConnectedRoomList extends Component {
             desks: deskList,
             searchFilterActive: false,
             searchOptionsVisibility: false,
-            startDate: new Date()
+            startDate: new Date(),
+            // startTime: ''
         };
         this.handleDateChange = this.handleDateChange.bind(this);
+        // this.handleTimeChange = this.handleTimeChange.bind(this);
     }
+
+    // handleTimeChange(time) {
+    //     this.setState({
+    //       startTime: time
+    //     });
+    //     console.log(typeof(time))
+    //   }
 
     handleDateChange(date) {
         this.setState({
           startDate: date
         });
+        console.log(typeof(date))
       }
 
     handleTabChange(event, data) {
@@ -276,35 +286,29 @@ class ConnectedRoomList extends Component {
         let avEquipmentOptions = AV_EQUIPMENT_OPTIONS;
         return (
             <Grid padded className="additionalSearchOptionsForm">
-                <Grid.Row className="seatsFormField">
+                <Grid.Row className="textFormField">
+                    <label className="timeHourLabel">Choose Meeting Date and Time</label>
+                </Grid.Row>
+                <Grid.Row className="dateFormField">
                     <DatePicker
+                    className="dateInput"
+                    hintText="Pick your date"
+                    selected={this.state.startDate}
+                    onChange={this.handleDateChange}
+                    />
+                </Grid.Row>
+                <Grid.Row className="timeFormField">
+                    <DatePicker
+                    className="timeInput"
+                    hintText="Pick your time"
                     selected={this.state.startDate}
                     onChange={this.handleDateChange}
                     showTimeSelect
+                    showTimeSelectOnly
+                    dateFormat="h:mm aa"
+                    timeCaption="Time"
                     />
                 </Grid.Row>
-                <Grid.Row className="seatsFormField">
-                    <label className="timeHourLabel">Enter Meeting Date and Time</label>
-                </Grid.Row>
-                <Grid.Row className="seatsFormField">
-                    <label className="timeHourLabel">Start Time (yyyy-MM-dd hh-mm)</label>
-                    <Input
-                        placeholder={"Enter a time..."}
-                        className="startInput"
-                        onChange={this.onSearchOptionsChange}
-                        defaultValue={this.props.selectedSearchFilters.hours || undefined}
-                            ref={(c) => this._attendeesInput = c}/>
-                </Grid.Row>
-                <Grid.Row className="seatsFormField">
-                    <label className="timeHourLabel">End Time (yyyy-MM-dd hh-mm)</label>
-                        <Input
-                            placeholder={"Enter a time..."}
-                            className="endInput"
-                            onChange={this.onSearchOptionsChange}
-                            defaultValue={this.props.selectedSearchFilters.minutes || undefined}
-                            ref={(b) => this._attendeesInput = b}/>        
-                </Grid.Row>        
-
                     <Divider horizontal>O</Divider>
 
                 <Grid.Row className="seatsFormField">
