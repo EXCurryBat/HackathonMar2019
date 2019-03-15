@@ -74,8 +74,8 @@ class ConnectedRoomList extends Component {
         this.setState({
           startDate: date
         });
-        // console.log(typeof(date))
-      }
+        this.filterRooms(this.state.lastSeat, this.state.lastEquip, true, date);
+    }
 
     handleTabChange(event, data) {
         this.props.selectRoomListTab(data.activeIndex);
@@ -127,7 +127,7 @@ class ConnectedRoomList extends Component {
                 seats: seats
             }
         );
-        this.filterRooms(seats, selectedAVEquipment);
+        this.filterRooms(seats, selectedAVEquipment, true, this.state.startDate);
 
     }
 
@@ -144,88 +144,89 @@ class ConnectedRoomList extends Component {
     }
 
     submitSearch() {
+        this.filterRooms(this.state.lastSeat, this.state.lastEquip, true, this.state.startDate);
         // alert('Hello!')
         // this.filterRooms(this.state.lastSeat, this.state.lastEquip);
 
-        let rooms = roomList.slice(0); // make a copy
-        let match;
-        let updatedRoomList = [];
+        // let rooms = roomList.slice(0); // make a copy
+        // let match;
+        // let updatedRoomList = [];
 
-        for (let i = 0; i < rooms.length; i++) {
-            let room = rooms[i];
-            match = true;
-            if (this.state.lastEquip.length > 0) {
-                for (let j in this.state.lastEquip) {
-                    if (!room[this.state.lastEquip[j]]) {
-                        match = false;
-                    }
-                }
-            }
-            if (this.state.lastSeat > room.seats) {
-                match = false;
-            }
-            if (match) {
-                updatedRoomList.push(room);
-            }
+        // for (let i = 0; i < rooms.length; i++) {
+        //     let room = rooms[i];
+        //     match = true;
+        //     if (this.state.lastEquip.length > 0) {
+        //         for (let j in this.state.lastEquip) {
+        //             if (!room[this.state.lastEquip[j]]) {
+        //                 match = false;
+        //             }
+        //         }
+        //     }
+        //     if (this.state.lastSeat > room.seats) {
+        //         match = false;
+        //     }
+        //     if (match) {
+        //         updatedRoomList.push(room);
+        //     }
             
-        }
+        // }
 
 
-        let monthPadding = '';
-        let datePadding = '';
-        let hourPadding = '';
-        let minutePadding = '';
+        // let monthPadding = '';
+        // let datePadding = '';
+        // let hourPadding = '';
+        // let minutePadding = '';
 
-        if(this.state.startDate.getMonth() + 1 < 10){
-            monthPadding = '0';
-        }
+        // if(this.state.startDate.getMonth() + 1 < 10){
+        //     monthPadding = '0';
+        // }
 
-        if(this.state.startDate.getDate() < 10){
-            datePadding = '0';
-        }
+        // if(this.state.startDate.getDate() < 10){
+        //     datePadding = '0';
+        // }
 
-        if(this.state.startDate.getHours() < 10){
-            hourPadding = '0';
-        }
+        // if(this.state.startDate.getHours() < 10){
+        //     hourPadding = '0';
+        // }
 
-        if(this.state.startDate.getMinutes() < 10){
-            minutePadding = '0';
-        }
+        // if(this.state.startDate.getMinutes() < 10){
+        //     minutePadding = '0';
+        // }
 
-        var targetDateTime = `${monthPadding}${this.state.startDate.getMonth() + 1}-${datePadding}${this.state.startDate.getDate()}-${this.state.startDate.getFullYear()} ${hourPadding}${this.state.startDate.getHours()}${minutePadding}${this.state.startDate.getMinutes()}`;
+        // var targetDateTime = `${monthPadding}${this.state.startDate.getMonth() + 1}-${datePadding}${this.state.startDate.getDate()}-${this.state.startDate.getFullYear()} ${hourPadding}${this.state.startDate.getHours()}${minutePadding}${this.state.startDate.getMinutes()}`;
 
-        // var currRooms = this.state.rooms;
-        let currRooms = updatedRoomList.splice(0);
-        var updatedRooms = [];
-        for (let i = 0; i < currRooms.length; i++) {
-            console.log(currRooms[i].title);
-            let room = currRooms[i];
-            let isFull = false;
+        // // var currRooms = this.state.rooms;
+        // let currRooms = updatedRoomList.splice(0);
+        // var updatedRooms = [];
+        // for (let i = 0; i < currRooms.length; i++) {
+        //     console.log(currRooms[i].title);
+        //     let room = currRooms[i];
+        //     let isFull = false;
 
-            //extract room schedule and compare
-            let roomSchedule = SchedulesJSON[room.title];
-            for(let j = 0; j < roomSchedule.length; j++){
-                isFull = this.checkSchedule(targetDateTime, roomSchedule[j]);
-                if(isFull){
-                    break;
-                }
-            }
-            if(!isFull){
+        //     //extract room schedule and compare
+        //     let roomSchedule = SchedulesJSON[room.title];
+        //     for(let j = 0; j < roomSchedule.length; j++){
+        //         isFull = this.checkSchedule(targetDateTime, roomSchedule[j]);
+        //         if(isFull){
+        //             break;
+        //         }
+        //     }
+        //     if(!isFull){
 
-                updatedRooms.push(room);
-            }
+        //         updatedRooms.push(room);
+        //     }
 
-        }
-        console.log(targetDateTime);
-        this.setState({
-            rooms: updatedRooms,
-            searchFilterActive: true
-        });
+        // }
+        // // console.log(targetDateTime);
+        // this.setState({
+        //     rooms: updatedRooms,
+        //     searchFilterActive: true
+        // });
     }
 
     onDeskClick(event) {
         var desk = Utils.getDesk(event.target.innerText);
-        if (this.props.selectedFloor !== desk.floor) {
+        if (this.props.selectedFloor  !== desk.floor) {
             this.props.selectFloor(desk.floor);
         }
         Utils.setURLParam('selectedDesk', desk.title)
@@ -271,7 +272,8 @@ class ConnectedRoomList extends Component {
         }
     }
 
-    filterRooms(seats, selectedAVEquipment) {
+    filterRooms(seats, selectedAVEquipment, searchSubmit, inputDate) {
+        
         let rooms = roomList.slice(0); // make a copy
         let match;
         let updatedRoomList = [];
@@ -294,15 +296,72 @@ class ConnectedRoomList extends Component {
             }
             
         }
+        
+        if(searchSubmit && inputDate != undefined){
+            let monthPadding = '';
+            let datePadding = '';
+            let hourPadding = '';
+            let minutePadding = '';
 
-        this.setState({
-            rooms: updatedRoomList,
-            searchFilterActive: (seats || selectedAVEquipment.length) ? true : false
-        });
+            let currTargetDate = inputDate;
+
+            if(currTargetDate.getMonth() + 1 < 10){
+                monthPadding = '0';
+            }
+
+            if(currTargetDate.getDate() < 10){
+                datePadding = '0';
+            }
+
+            if(currTargetDate.getHours() < 10){
+                hourPadding = '0';
+            }
+
+            if(currTargetDate.getMinutes() < 10){
+                minutePadding = '0';
+            }
+
+            var targetDateTime = `${monthPadding}${currTargetDate.getMonth() + 1}-${datePadding}${currTargetDate.getDate()}-${currTargetDate.getFullYear()} ${hourPadding}${currTargetDate.getHours()}${minutePadding}${currTargetDate.getMinutes()}`;
+
+            // var currRooms = this.state.rooms;
+            let currRooms = updatedRoomList.splice(0);
+            var updatedRooms = [];
+            for (let i = 0; i < currRooms.length; i++) {
+                // console.log(currRooms[i].title);
+                let room = currRooms[i];
+                let isFull = false;
+
+                //extract room schedule and compare
+                let roomSchedule = SchedulesJSON[room.title];
+                for(let j = 0; j < roomSchedule.length; j++){
+                    if(isFull){
+                        continue;
+                    } else {
+                        isFull = this.checkSchedule(targetDateTime, roomSchedule[j]);
+                    }
+                }
+                if(!isFull){
+                    updatedRooms.push(room);
+                }
+
+            }
+            // console.log(targetDateTime);
+            this.setState({
+                rooms: updatedRooms,
+                searchFilterActive: true
+            });
+            console.log(this.state.rooms);
+        } else {
+            this.setState({
+                rooms: updatedRoomList,
+                searchFilterActive: (seats || selectedAVEquipment.length) ? true : false
+            });
+        }
+        
     }
 
     componentDidMount() {
-        this.filterRooms(this.props.selectedSearchFilters.seats, this.props.selectedSearchFilters.avEquipment);
+        this.filterRooms(this.props.selectedSearchFilters.seats, this.props.selectedSearchFilters.avEquipment, false, this.state.startDate);
         this.setState({
             lastSeat: this.props.selectedSearchFilters.seats,
             lastEquip: this.props.selectedSearchFilters.avEquipment
