@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import _ from 'lodash';
 import { Grid, List, Input, Button, Segment, Sidebar, Search, Tab, Icon, Menu, Divider } from 'semantic-ui-react';
 import MultiSelect from './MultiSelect';
@@ -52,8 +54,16 @@ class ConnectedRoomList extends Component {
             desks: deskList,
             searchFilterActive: false,
             searchOptionsVisibility: false,
+            startDate: new Date()
         };
+        this.handleDateChange = this.handleDateChange.bind(this);
     }
+
+    handleDateChange(date) {
+        this.setState({
+          startDate: date
+        });
+      }
 
     handleTabChange(event, data) {
         this.props.selectRoomListTab(data.activeIndex);
@@ -113,6 +123,10 @@ class ConnectedRoomList extends Component {
         this.setState({
             searchOptionsVisibility: false
         });
+    }
+
+    submitSearch() {
+        alert('Hello!')
     }
 
     onDeskClick(event) {
@@ -263,6 +277,13 @@ class ConnectedRoomList extends Component {
         return (
             <Grid padded className="additionalSearchOptionsForm">
                 <Grid.Row className="seatsFormField">
+                    <DatePicker
+                    selected={this.state.startDate}
+                    onChange={this.handleDateChange}
+                    showTimeSelect
+                    />
+                </Grid.Row>
+                <Grid.Row className="seatsFormField">
                     <label className="timeHourLabel">Enter Meeting Date and Time</label>
                 </Grid.Row>
                 <Grid.Row className="seatsFormField">
@@ -270,16 +291,18 @@ class ConnectedRoomList extends Component {
                     <Input
                         placeholder={"Enter a time..."}
                         className="startInput"
-                        defaultValue={this.props.selectedSearchFilters.start || undefined}
-                        ref={(a) => this._startInput = a}/>
+                        onChange={this.onSearchOptionsChange}
+                        defaultValue={this.props.selectedSearchFilters.hours || undefined}
+                            ref={(c) => this._attendeesInput = c}/>
                 </Grid.Row>
                 <Grid.Row className="seatsFormField">
                     <label className="timeHourLabel">End Time (yyyy-MM-dd hh-mm)</label>
-                    <Input
-                        placeholder={"Enter a time..."}
-                        className="endInput"
-                        defaultValue={this.props.selectedSearchFilters.end|| undefined}
-                        ref={(a) => this._endInput = a}/>        
+                        <Input
+                            placeholder={"Enter a time..."}
+                            className="endInput"
+                            onChange={this.onSearchOptionsChange}
+                            defaultValue={this.props.selectedSearchFilters.minutes || undefined}
+                            ref={(b) => this._attendeesInput = b}/>        
                 </Grid.Row>        
 
                     <Divider horizontal>O</Divider>
@@ -305,6 +328,9 @@ class ConnectedRoomList extends Component {
                         content={SHOW_NUM_SELECTED}
                         text={"Select an option..."}
                     />
+                </Grid.Row>
+                <Grid.Row className="roomListButton">
+                    <Button onClick={()=>{this.submitSearch()}}>Search</Button>
                 </Grid.Row>
             </Grid>
         );
