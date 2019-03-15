@@ -46,6 +46,7 @@ class ConnectedRoomList extends Component {
         this.onSearchOptionsChange = this.onSearchOptionsChange.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
         this.filterRooms = this.filterRooms.bind(this);
+        this.checkSchedule = this.checkSchedule.bind(this);
         this.state = {
             rooms: roomList,
             desks: deskList,
@@ -86,6 +87,7 @@ class ConnectedRoomList extends Component {
     onSearchOptionsChange(event, value) {
         var selectedAVEquipment = this.props.selectedSearchFilters.avEquipment || [];
         var seats = this.props.selectedSearchFilters.seats || 0;
+    
         if (value.constructor === Array) {
             selectedAVEquipment = value;
         } else {
@@ -125,7 +127,56 @@ class ConnectedRoomList extends Component {
         });
     }
 
+    checkSchedule(inputRange, scheduledSession){
+        var targetDay = inputRange[0].split(" ")[0];
+        var schedDay = scheduledSession[0].split(" ")[0];
+        var sameDay = targetDay === schedDay;
+        console.log("New Entry:\n");
+        console.log(`Target: ${targetDay} | Sched: ${schedDay} | Result: ${sameDay}`);
+        console.log("Time Comparison");
+        var targetStart = parseInt(inputRange[0].split(" ")[1]);
+        var targetEnd = parseInt(inputRange[1].split(" ")[1]);
+        var schedStart = parseInt(scheduledSession[0].split(" ")[1]);
+        var schedEnd = parseInt(scheduledSession[1].split(" ")[1]);
+
+        if(!sameDay){
+            console.log("DIFFERENT DAY");
+            return false;
+        }
+
+        if(targetStart == schedStart){
+            return true;
+        } else if(targetStart < schedStart){
+            if(targetEnd <= schedStart){
+                console.log("No Conflict")
+                return false;
+            }
+            console.log("BIG CONFLICT");
+            return true;
+        } else {
+            if(targetStart >= schedEnd){
+                console.log("No Conflict");
+                return false;
+            }
+            console.log("BIG CONFLICT");
+            return true;
+        }
+    }
+
     filterRooms(seats, selectedAVEquipment) {
+
+        let testInput = ["09-01-2019 1159", "09-01-2019 1559"];
+        let testRoomData = [
+            ["09-01-2019 1700", "09-01-2019 1730"],
+            ["08-25-2019 1800", "08-25-2019 1800"],
+            ["08-26-2019 1800", "08-26-2019 1800"],
+            ["09-01-2019 1600", "09-01-2019 1700"],
+            ["09-01-2019 1800", "09-01-2019 1900"],
+            ["09-01-2019 1130", "09-01-2019 1200"],
+            ["08-25-2019 1800", "08-25-2019 1800"],
+            ["08-25-2019 1800", "08-25-2019 1800"]
+        ];
+
         let rooms = roomList.slice(0); // make a copy
         let match;
         let updatedRoomList = [];
@@ -144,8 +195,23 @@ class ConnectedRoomList extends Component {
                 match = false;
             }
             if (match) {
+                let isFull = false;
+                //extract room schedule and compare
+                let roomSchedule = testRoomData;
+                for(let j = 0; j < roomSchedule.length; j++){
+                    isFull = this.checkSchedule(testInput, testRoomData[j]);
+                    if(isFull){
+                        break;
+                    }
+                }
+                console.log("Full? " + isFull);
+
+                // if(!isFull){
+                //     updatedRoomList.push(room);
+                // }
                 updatedRoomList.push(room);
             }
+            
         }
         this.setState({
             rooms: updatedRoomList,
@@ -204,18 +270,16 @@ class ConnectedRoomList extends Component {
                     <Input
                         placeholder={"Enter a time..."}
                         className="startInput"
-                        onChange={this.onSearchOptionsChange}
-                        defaultValue={this.props.selectedSearchFilters.hours || undefined}
-                            ref={(a) => this._attendeesInput = a}/>
+                        defaultValue={this.props.selectedSearchFilters.start || undefined}
+                        ref={(a) => this._startInput = a}/>
                 </Grid.Row>
                 <Grid.Row className="seatsFormField">
                     <label className="timeHourLabel">End Time (yyyy-MM-dd hh-mm)</label>
-                        <Input
-                            placeholder={"Enter a time..."}
-                            className="endInput"
-                            onChange={this.onSearchOptionsChange}
-                            defaultValue={this.props.selectedSearchFilters.minutes || undefined}
-                            ref={(a) => this._attendeesInput = a}/>        
+                    <Input
+                        placeholder={"Enter a time..."}
+                        className="endInput"
+                        defaultValue={this.props.selectedSearchFilters.end|| undefined}
+                        ref={(a) => this._endInput = a}/>        
                 </Grid.Row>        
 
                     <Divider horizontal>O</Divider>
