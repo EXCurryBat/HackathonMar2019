@@ -60,15 +60,8 @@ class ConnectedRoomList extends Component {
             // startTime: ''
         };
         this.handleDateChange = this.handleDateChange.bind(this);
-        // this.handleTimeChange = this.handleTimeChange.bind(this);
-    }
 
-    // handleTimeChange(time) {
-    //     this.setState({
-    //       startTime: time
-    //     });
-    //     console.log(typeof(time))
-    //   }
+    }
 
     handleDateChange(date) {
         this.setState({
